@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8475A2AE2AE2A5F100749D57 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8475A2AD2AE2A5F100749D57 /* UserTableViewCell.swift */; };
 		8B34A1DF2B02207A00B049E3 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 8B34A1DE2B02207A00B049E3 /* README.md */; };
+		8B34A1E12B022DD300B049E3 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B34A1E02B022DD300B049E3 /* TestViewController.swift */; };
 		8B5E94D12AE9553C0087958E /* GithubAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B5E94D02AE9553C0087958E /* GithubAPI.swift */; };
 		8B72B0322AD03789008A757A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B72B0312AD03789008A757A /* AppDelegate.swift */; };
 		8B72B0362AD03789008A757A /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B72B0352AD03789008A757A /* UserProfileViewController.swift */; };
@@ -43,6 +44,7 @@
 /* Begin PBXFileReference section */
 		8475A2AD2AE2A5F100749D57 /* UserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; wrapsLines = 1; };
 		8B34A1DE2B02207A00B049E3 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		8B34A1E02B022DD300B049E3 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		8B5E94D02AE9553C0087958E /* GithubAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GithubAPI.swift; sourceTree = "<group>"; };
 		8B72B02E2AD03789008A757A /* HubHub.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HubHub.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B72B0312AD03789008A757A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 		8B72B06B2AD9659C008A757A /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				8B34A1E02B022DD300B049E3 /* TestViewController.swift */,
 				8BC0AF9E2AEFD0FD0086BD17 /* MainTapBarController.swift */,
 			);
 			path = Navigation;
@@ -453,6 +456,7 @@
 				8BA47D892AF933EA00E34286 /* SettingsSectionHeaderView.swift in Sources */,
 				8BA47D762AF8D3E100E34286 /* DefaultThemes.swift in Sources */,
 				8BC3F5222AF2900100C0C34A /* Theme.swift in Sources */,
+				8B34A1E12B022DD300B049E3 /* TestViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

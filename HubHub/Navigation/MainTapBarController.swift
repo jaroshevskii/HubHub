@@ -33,6 +33,13 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
         return navigationController
     }()
     
+    private lazy var testNavigationController: UINavigationController = {
+        let obj = UINavigationController(rootViewController: TestViewController())
+        obj.tabBarItem.image = UIImage(systemName: "person")
+        obj.tabBarItem.title = "Profile"
+        return obj
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,6 +49,7 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
             userListNavigationController,
             userProfileNavigationController,
             settingsNavigationController,
+            testNavigationController,
         ], animated: true)
         
         selectedViewController = settingsNavigationController
@@ -61,7 +69,6 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
 extension MainTapBarController: Themeable {
     func applyTheme() {
         tabBar.tintColor = currentTheme.tintColor
-//        tabBar.barTintColor = currentTheme.backgroundColor
     }
 }
 

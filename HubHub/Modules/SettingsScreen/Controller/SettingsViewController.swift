@@ -175,8 +175,6 @@ extension SettingsViewController: UIColorPickerViewControllerDelegate {
 // MARK: - Theme
 extension SettingsViewController: Themeable {
     func applyTheme() {
-//        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColor
-        
         mainView.applyTheme()
     }
     
