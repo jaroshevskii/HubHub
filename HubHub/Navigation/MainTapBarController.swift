@@ -1,5 +1,5 @@
 //
-//  TapBar.swift
+//  MainTapBarController.swift
 //  GitHub
 //
 //  Created by Sasha Jarohevskii on 30.10.2023.
@@ -33,13 +33,6 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
         return navigationController
     }()
     
-    private lazy var testNavigationController: UINavigationController = {
-        let obj = UINavigationController(rootViewController: TestViewController())
-        obj.tabBarItem.image = UIImage(systemName: "person")
-        obj.tabBarItem.title = "Profile"
-        return obj
-    }()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -49,7 +42,6 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
             userListNavigationController,
             userProfileNavigationController,
             settingsNavigationController,
-            testNavigationController,
         ], animated: true)
         
         selectedViewController = settingsNavigationController

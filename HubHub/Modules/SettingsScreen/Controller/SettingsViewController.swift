@@ -7,31 +7,46 @@
 
 import UIKit
 
-class SettingsViewController: UIViewController {
-    private struct Section {
-        var title: String
-        var items: [String]
-        var isVisible = true
+enum SettingsSection: Titleable, CaseIterable {
+    case `default`
+    case custom
+    
+    enum SettingCell: Titleable {
+        case light
+        case dark
+        case dracula
+        
+        case backgroundColor
+        case tintColor
     }
     
-    private var sections = [
-        Section(title: "Standart", items: ["Light", "Dark", "Dracula"]),
-        Section(title: "Custom", items: ["Background Color", "Tini Color"]),
+    var cells: [SettingCell] {
+        switch self {
+        case .default:
+            return [.light, .dark, .dracula]
+        case .custom:
+            return [.backgroundColor, .tintColor]
+        }
+    }
+}
+
+class SettingsViewController: UIViewController {
+    private let sections = SettingsSection.allCases
+    private var sectionsOpenState: [SettingsSection: Bool] = [
+        .default: true,
+        .custom: true,
     ]
     
-    private var lastSelectedIndexPath: IndexPath?
-    
     var delegate: SettingsViewControllerDelegate?
-
     
+    private let mainView = SettingsView()
+
     private lazy var colorPickerViewController: UIColorPickerViewController = {
         let obj = UIColorPickerViewController()
         obj.delegate = self
-        obj.selectedColor = ThemeManager.shared.current.backgroundColor
+        obj.selectedColor = currentTheme.backgroundColor
         return obj
     }()
-    
-    private let mainView = SettingsView()
     
     override func loadView() {
         super.loadView()
@@ -45,17 +60,15 @@ class SettingsViewController: UIViewController {
         configureNavigationBar()
         configureTableView()
         
-        mainView.changeThemeButton.addTarget(self, action: #selector(showColorPicker), for: .touchUpInside)
+        mainView.changeThemeButton.addAction(UIAction { [self] _ in
+            present(colorPickerViewController, animated: true, completion: nil)
+        }, for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         applyTheme()
-    }
-    
-    @objc func showColorPicker() {
-        present(colorPickerViewController, animated: true, completion: nil)
     }
 }
 
@@ -81,21 +94,24 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let section = sections[section]
-        return section.isVisible ? section.items.count : 0
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell") as? SettingsCellView else {
-            return SettingsCellView()
+        if sectionsOpenState[sections[section]] == true {
+            return sections[section].cells.count
+        } else {
+            return 0
         }
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cellView = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")
+            as? SettingsCellView else { return SettingsCellView() }
         
         let section = sections[indexPath.section]
-        let text = section.items[indexPath.row]
-        cell.textLabel?.text = text
-        cell.applyTheme()
+        let cell = section.cells[indexPath.row]
+        let text = cell.title
+        cellView.textLabel?.text = text
+        cellView.applyTheme()
         
-        return cell
+        return cellView
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -119,55 +135,56 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     @objc func toggleSection(_ sender: UITapGestureRecognizer) {
-        guard let section = sender.view?.tag else { return }
+        guard let headerView = sender.view as? SettingsSectionHeaderView else { return }
+
+        let section = headerView.tag
+        sectionsOpenState[sections[section]]?.toggle()
+
+        let numberOfRows = sections[section].cells.count
+        let indexPaths = (0..<numberOfRows).map { IndexPath(row: $0, section: section) }
         
-        sections[section].isVisible.toggle()
-        
-        let indices = sections[section].items.indices.map { IndexPath(row: $0, section: section) }
-        
-        mainView.tableView.beginUpdates()
-        if sections[section].isVisible {
-            mainView.tableView.insertRows(at: indices, with: .top )
-        } else {
-            mainView.tableView.deleteRows(at: indices, with: .top)
-        }
-        mainView.tableView.endUpdates()
-        
-        
-        if let headerView = mainView.tableView.headerView(forSection: section) as? SettingsSectionHeaderView {
-            headerView.animateDecorImage(sections[section].isVisible)
+        if let isOpen = sectionsOpenState[sections[section]] {
+            mainView.tableView.performBatchUpdates {
+                headerView.animateDecorImage(isOpen)
+                if isOpen {
+                    mainView.tableView.insertRows(at: indexPaths, with: .top)
+                } else {
+                    mainView.tableView.deleteRows(at: indexPaths, with: .top)
+                }
+            }
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let lastIndexPath = lastSelectedIndexPath {
-            if let lastSelectedCell = tableView.cellForRow(at: lastIndexPath) {
-                lastSelectedCell.accessoryType = .none
-            }
-        }
-        
-        if let selectedCell = tableView.cellForRow(at: indexPath) {
-            selectedCell.accessoryType = .checkmark
-            lastSelectedIndexPath = indexPath
-            
-            switch selectedCell.textLabel?.text {
-            case "Light":
-                changeTheme(to: .light)
-            case "Dark":
-                changeTheme(to: .dark)
-            case "Dracula":
-                changeTheme(to: .dracula)
-            default: break
-            }
-        }
-        
         tableView.deselectRow(at: indexPath, animated: true)
+        
+//        if let lastIndexPath = lastSelectedIndexPath {
+//            if let lastSelectedCell = tableView.cellForRow(at: lastIndexPath) {
+//                lastSelectedCell.accessoryType = .none
+//            }
+//        }
+        let selectedSection = sections[indexPath.section]
+        let selectedCell = selectedSection.cells[indexPath.row]
+        
+        switch selectedCell {
+        case .light:
+            changeTheme(to: .light)
+        case .dark:
+            changeTheme(to: .dark)
+        case .dracula:
+            changeTheme(to: .dracula)
+            
+        case .backgroundColor:
+            break
+        case .tintColor:
+            break
+        }
     }
 }
 
 extension SettingsViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        let newTheme = Theme(color: viewController.selectedColor)
+        let newTheme = Theme(baseColor: viewController.selectedColor)
         changeTheme(to: newTheme)
     }
 }

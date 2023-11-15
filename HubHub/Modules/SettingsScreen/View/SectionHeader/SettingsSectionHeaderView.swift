@@ -17,6 +17,8 @@ class SettingsSectionHeaderView: UITableViewHeaderFooterView {
         }
     }
     
+    var isSectionCellsVisible = true
+    
     private let textLable: UILabel = {
         let obj = UILabel()
         obj.font = .boldSystemFont(ofSize: obj.font.pointSize)
@@ -39,7 +41,7 @@ class SettingsSectionHeaderView: UITableViewHeaderFooterView {
     }
 
     private func setup() {
-         addSubview(textLable)
+        addSubview(textLable)
         addSubview(decorImageView)
         
         makeConstraints()
@@ -47,13 +49,13 @@ class SettingsSectionHeaderView: UITableViewHeaderFooterView {
      
     private func makeConstraints() {
         textLable.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(12)
+            make.centerY.equalTo(safeAreaLayoutGuide)
+            make.leading.equalTo(safeAreaLayoutGuide).inset(12)
         }
         
         decorImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(12)
+            make.centerY.equalTo(safeAreaLayoutGuide)
+            make.trailing.equalTo(safeAreaLayoutGuide).inset(12)
         }
     }
 }

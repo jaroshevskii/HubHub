@@ -56,6 +56,7 @@ extension SettingsView: Themeable {
     func applyTheme() {
         backgroundColor = .systemBackground
         tableView.backgroundColor = currentTheme.backgroundColor
+        
         for section in 0..<tableView.numberOfSections {
             if let headerView = tableView.headerView(forSection: section) as? SettingsSectionHeaderView {
                 headerView.applyTheme()
