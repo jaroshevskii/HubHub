@@ -33,10 +33,17 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
         return navigationController
     }()
     
+    init() {
+        super.init(nibName: nil, bundle: nil)
+        loadThemeFromUserDefaults()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        loadThemeFromUserDefaults()
         
         setViewControllers([
             userListNavigationController,

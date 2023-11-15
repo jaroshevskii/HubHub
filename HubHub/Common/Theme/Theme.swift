@@ -8,18 +8,7 @@
 import UIKit
 
 struct Theme: Codable {
-    var userInterfaceStyle: UIUserInterfaceStyle {
-        didSet {
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-                windowScene.windows.forEach { window in
-                    window.overrideUserInterfaceStyle = userInterfaceStyle
-                }
-            }
-            
-            
-            print("Did")
-        }
-    }
+    var userInterfaceStyle: UIUserInterfaceStyle
     var backgroundColor: UIColor
     var tintColor: UIColor
     

@@ -30,6 +30,11 @@ enum SettingsSection: Titleable, CaseIterable {
     }
 }
 
+enum ColorPickerType {
+    case background
+    case tint
+}
+
 class SettingsViewController: UIViewController {
     private let sections = SettingsSection.allCases
     private var sectionsOpenState: [SettingsSection: Bool] = [
@@ -38,6 +43,12 @@ class SettingsViewController: UIViewController {
     ]
     
     var delegate: SettingsViewControllerDelegate?
+    var selectedPickerType: ColorPickerType?
+
+    enum ColorPickerType {
+        case background
+        case tint
+    }
     
     private let mainView = SettingsView()
 
@@ -158,11 +169,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-//        if let lastIndexPath = lastSelectedIndexPath {
-//            if let lastSelectedCell = tableView.cellForRow(at: lastIndexPath) {
-//                lastSelectedCell.accessoryType = .none
-//            }
-//        }
         let selectedSection = sections[indexPath.section]
         let selectedCell = selectedSection.cells[indexPath.row]
         
@@ -175,16 +181,43 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             changeTheme(to: .dracula)
             
         case .backgroundColor:
-            break
+            selectedPickerType = .background
+            presentColorPicker()
         case .tintColor:
-            break
+            selectedPickerType = .tint
+            presentColorPicker()
         }
+    }
+    
+    func presentColorPicker() {
+        let colorPickerViewController = UIColorPickerViewController()
+        colorPickerViewController.delegate = self
+
+        switch selectedPickerType {
+        case .background:
+            colorPickerViewController.selectedColor = currentTheme.backgroundColor
+        case .tint:
+            colorPickerViewController.selectedColor = currentTheme.tintColor
+        default: break
+        }
+        
+        present(colorPickerViewController, animated: true, completion: nil)
     }
 }
 
 extension SettingsViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
-        let newTheme = Theme(baseColor: viewController.selectedColor)
+        let newColor = viewController.selectedColor
+        var newTheme = ThemeManager.shared.current
+        
+        switch selectedPickerType {
+        case .background:
+            newTheme.backgroundColor = newColor
+        case .tint:
+            newTheme.tintColor = newColor
+        default: break
+        }
+        
         changeTheme(to: newTheme)
     }
 }
@@ -197,7 +230,7 @@ extension SettingsViewController: Themeable {
     
     func changeTheme(to newTheme: Theme) {
         ThemeManager.shared.current = newTheme
-        
+
         applyTheme()
         delegate?.didChangeTheme()
 

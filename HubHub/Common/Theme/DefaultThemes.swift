@@ -10,13 +10,13 @@ import UIKit
 extension Theme {
     static var light = Theme(
         userInterfaceStyle: .light,
-        backgroundColor: .systemBackground,
+        backgroundColor: .white,
         tintColor: .tintColor
     )
     
     static var dark = Theme(
         userInterfaceStyle: .dark,
-        backgroundColor: .systemBackground,
+        backgroundColor: .black,
         tintColor: .tintColor
     )
 

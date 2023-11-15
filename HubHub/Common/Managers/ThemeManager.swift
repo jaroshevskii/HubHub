@@ -10,5 +10,14 @@ import UIKit
 struct ThemeManager {
     static var shared = ThemeManager()
     
-    var current: Theme = .dracula
+    var current: Theme = .dracula {
+        didSet {
+//            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+//                windowScene.windows.forEach { window in
+//                    window.overrideUserInterfaceStyle = current.userInterfaceStyle
+//                }
+//            }
+            UIApplication.shared.keyWindow?.overrideUserInterfaceStyle = current.userInterfaceStyle
+        }
+    }
 }
