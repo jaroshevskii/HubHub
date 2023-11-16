@@ -12,12 +12,11 @@ struct ThemeManager {
     
     var current: Theme = .dracula {
         didSet {
-//            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
-//                windowScene.windows.forEach { window in
-//                    window.overrideUserInterfaceStyle = current.userInterfaceStyle
-//                }
-//            }
-            UIApplication.shared.keyWindow?.overrideUserInterfaceStyle = current.userInterfaceStyle
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                windowScene.windows.forEach { window in
+                    window.overrideUserInterfaceStyle = current.userInterfaceStyle
+                }
+            }
         }
     }
 }

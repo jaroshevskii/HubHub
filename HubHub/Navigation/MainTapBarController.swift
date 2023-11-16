@@ -33,17 +33,10 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
         return navigationController
     }()
     
-    init() {
-        super.init(nibName: nil, bundle: nil)
-        loadThemeFromUserDefaults()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadThemeFromUserDefaults()
         
         setViewControllers([
             userListNavigationController,
@@ -68,6 +61,7 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
 extension MainTapBarController: Themeable {
     func applyTheme() {
         tabBar.tintColor = currentTheme.tintColor
+        overrideUserInterfaceStyle = currentTheme.userInterfaceStyle
     }
 }
 
