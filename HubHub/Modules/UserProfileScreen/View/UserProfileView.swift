@@ -1,6 +1,6 @@
 //
 //  UserProfileView.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 06.10.2023.
 //
@@ -147,7 +147,7 @@ class UserProfileView: UIView {
     }
 }
 
-// MARK: - Loading indicator animation
+// MARK: - Loading Indicator Animation
 extension UserProfileView {
     func startLoadingAnimating() {
         loadingIndicatorView.startAnimating()

@@ -1,6 +1,6 @@
 //
 //  SettingsViewController.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 30.10.2023.
 //
@@ -70,10 +70,6 @@ class SettingsViewController: UIViewController {
         
         configureNavigationBar()
         configureTableView()
-        
-        mainView.changeThemeButton.addAction(UIAction { [self] _ in
-            present(colorPickerViewController, animated: true, completion: nil)
-        }, for: .touchUpInside)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -205,10 +201,11 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+// MARK: - Color Piker Delegate
 extension SettingsViewController: UIColorPickerViewControllerDelegate {
     func colorPickerViewControllerDidFinish(_ viewController: UIColorPickerViewController) {
         let newColor = viewController.selectedColor
-        var newTheme = ThemeManager.shared.current
+        var newTheme = currentTheme
         
         switch selectedPickerType {
         case .background:
@@ -229,17 +226,9 @@ extension SettingsViewController: Themeable {
     }
     
     func changeTheme(to newTheme: Theme) {
-        ThemeManager.shared.current = newTheme
+        ThemeService.currentTheme = newTheme
 
         applyTheme()
         delegate?.didChangeTheme()
-
-        do {
-            let encoded = try JSONEncoder().encode(newTheme)
-            UserDefaults.standard.set(encoded, forKey: "Theme")
-            print("Saved theme to UserDefaults")
-        } catch {
-            print("Failed to encode theme: \(error)")
-        }
     }
 }

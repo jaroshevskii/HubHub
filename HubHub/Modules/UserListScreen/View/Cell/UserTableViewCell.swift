@@ -1,6 +1,6 @@
 //
 //  UserTableViewCell.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Anton Andreev on 10/20/23.
 //

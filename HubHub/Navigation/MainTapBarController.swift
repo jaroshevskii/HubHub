@@ -37,8 +37,6 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadThemeFromUserDefaults()
-        
         setViewControllers([
             userListNavigationController,
             userProfileNavigationController,
@@ -55,12 +53,7 @@ class MainTabBarController: UITabBarController {
     }
 }
 
-extension MainTabBarController: SettingsViewControllerDelegate {
-    func didChangeTheme() {
-        applyTheme()
-    }
-}
-
+// MARK: - Theme
 extension MainTabBarController: Themeable {
     func applyTheme() {
         tabBar.tintColor = currentTheme.tintColor
@@ -68,14 +61,8 @@ extension MainTabBarController: Themeable {
     }
 }
 
-extension MainTabBarController {
-    private func loadThemeFromUserDefaults() {
-        if let savedThemeData = UserDefaults.standard.object(forKey: "Theme") as? Data,
-           let loadedTheme = try? JSONDecoder().decode(Theme.self, from: savedThemeData) {
-            ThemeManager.shared.current = loadedTheme
-            print("Theme loaded successfully from UserDefaults")
-        } else {
-            print("Failed to decode Theme from UserDefaults")
-        }
+extension MainTabBarController: SettingsViewControllerDelegate {
+    func didChangeTheme() {
+        applyTheme()
     }
 }

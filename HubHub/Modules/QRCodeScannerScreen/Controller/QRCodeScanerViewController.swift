@@ -1,6 +1,6 @@
 //
 //  QRCodeScanerViewController.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 27.10.2023.
 //

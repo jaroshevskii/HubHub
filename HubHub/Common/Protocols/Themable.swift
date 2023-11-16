@@ -20,7 +20,7 @@ protocol Themeable {
 extension Themeable {
     /// The current theme applied to the object. Defaults to the shared theme from `ThemeManager`.
     var currentTheme: Theme {
-        get { ThemeManager.shared.current }
-        set { ThemeManager.shared.current = newValue }
+        get { ThemeService.currentTheme }
+        set { ThemeService.currentTheme = newValue }
     }
 }

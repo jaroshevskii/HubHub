@@ -1,6 +1,6 @@
 //
 //  UserListView.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 13.10.2023.
 //

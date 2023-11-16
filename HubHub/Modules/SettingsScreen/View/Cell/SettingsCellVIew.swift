@@ -1,6 +1,6 @@
 //
 //  SettingsCellVIew.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 08.11.2023.
 //

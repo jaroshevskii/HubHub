@@ -1,6 +1,6 @@
 //
 //  UserProfileViewController.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 06.10.2023.
 //

@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 30.10.2023.
 //
@@ -14,15 +14,7 @@ class SettingsView: UIView {
         obj.sectionHeaderTopPadding = 0
         return obj
     }()
-    
-    let changeThemeButton: UIButton = {
-        let obj = UIButton(type: .system)
-        var configuration = UIButton.Configuration.filled()
-        configuration.title = "Custom"
-        obj.configuration = configuration
-        return obj
-    }()
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -35,7 +27,6 @@ class SettingsView: UIView {
     
     private func setup() {
         addSubview(tableView)
-        addSubview(changeThemeButton)
         
         makeConstraints()
     }
@@ -44,14 +35,10 @@ class SettingsView: UIView {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        changeThemeButton.snp.makeConstraints { make in
-            make.trailing.equalTo(safeAreaLayoutGuide).inset(8)
-            make.bottom.equalTo(safeAreaLayoutGuide).inset(8)
-        }
     }
 }
 
+// MARK: - Theme
 extension SettingsView: Themeable {
     func applyTheme() {
         backgroundColor = .systemBackground
@@ -68,7 +55,5 @@ extension SettingsView: Themeable {
                 }
             }
         }
-
-        changeThemeButton.configuration?.baseBackgroundColor = currentTheme.tintColor
     }
 }
