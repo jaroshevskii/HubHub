@@ -1,6 +1,6 @@
 //
 //  SettingsViewControllerDelegate.swift
-//  GitHub
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 06.11.2023.
 //

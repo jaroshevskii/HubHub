@@ -107,7 +107,7 @@ extension UserListViewController {
         isLoadingData = true
         
         let lastUserID = users.last?.id ?? 0
-        GitHubAPIManager.shared.fetchUsersTableDatas(from: lastUserID) { [self] result in
+        GitHubAPIManager.shared.fetchUsersTableData(from: lastUserID) { [self] result in
             switch result {
             case .success(let userTableDatas):
                 let initialCount = users.count
@@ -123,7 +123,7 @@ extension UserListViewController {
     }
     
     @objc private func refreshData() {
-        GitHubAPIManager.shared.fetchUsersTableDatas() { [self] result in
+        GitHubAPIManager.shared.fetchUsersTableData() { [self] result in
             switch result {
             case .success(let userTableDatas):
                 users = userTableDatas

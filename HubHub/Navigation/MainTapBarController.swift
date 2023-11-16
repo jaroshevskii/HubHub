@@ -1,13 +1,13 @@
 //
-//  MainTapBarController.swift
-//  GitHub
+//  MainTabBarController.swift
+//  HubHub
 //
 //  Created by Sasha Jarohevskii on 30.10.2023.
 //
 
 import UIKit
 
-class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
+class MainTabBarController: UITabBarController {
     private lazy var userListNavigationController: UINavigationController = {
         let obj = UINavigationController(rootViewController: UserListViewController())
         obj.tabBarItem.image = UIImage(systemName: "person.3")
@@ -16,7 +16,9 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
     }()
     
     private lazy var userProfileNavigationController: UINavigationController = {
-        let obj = UINavigationController(rootViewController: UserProfileViewController(login: "jaroshevskii"))
+        let obj = UINavigationController(
+            rootViewController: UserProfileViewController(login: "jaroshevskii")
+        )
         obj.tabBarItem.image = UIImage(systemName: "person")
         obj.tabBarItem.title = "Profile"
         return obj
@@ -26,11 +28,10 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
         let settingsViewController = SettingsViewController()
         settingsViewController.delegate = self
         
-        let navigationController = UINavigationController(rootViewController: settingsViewController)
-        navigationController.tabBarItem.image = UIImage(systemName: "gear")
-        navigationController.tabBarItem.title = "Settings"
-        
-        return navigationController
+        let obj = UINavigationController(rootViewController: settingsViewController)
+        obj.tabBarItem.image = UIImage(systemName: "gear")
+        obj.tabBarItem.title = "Settings"
+        return obj
     }()
     
     override func viewDidLoad() {
@@ -52,20 +53,22 @@ class MainTapBarController: UITabBarController, SettingsViewControllerDelegate {
         
         applyTheme()
     }
-    
+}
+
+extension MainTabBarController: SettingsViewControllerDelegate {
     func didChangeTheme() {
         applyTheme()
     }
 }
 
-extension MainTapBarController: Themeable {
+extension MainTabBarController: Themeable {
     func applyTheme() {
         tabBar.tintColor = currentTheme.tintColor
         overrideUserInterfaceStyle = currentTheme.userInterfaceStyle
     }
 }
 
-extension MainTapBarController {
+extension MainTabBarController {
     private func loadThemeFromUserDefaults() {
         if let savedThemeData = UserDefaults.standard.object(forKey: "Theme") as? Data,
            let loadedTheme = try? JSONDecoder().decode(Theme.self, from: savedThemeData) {
