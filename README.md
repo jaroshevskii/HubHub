@@ -1,4 +1,4 @@
-<img width="872" alt="image" src="https://github.com/jaroshevskii/HubHub/assets/72662383/bb53169b-c72e-44f2-afe8-2289a7254afa">
+![image](https://github.com/jaroshevskii/HubHub/assets/72662383/c5b60540-5f0c-48d4-b73b-65d5bedbc022)
 
 # HubHub
 
