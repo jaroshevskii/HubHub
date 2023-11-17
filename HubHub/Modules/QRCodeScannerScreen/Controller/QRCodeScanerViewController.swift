@@ -11,16 +11,11 @@ import AVFoundation
 class QRCodeScannerViewController: UIViewController {
     private let captureSession = AVCaptureSession()
     private var previewLayer: AVCaptureVideoPreviewLayer!
-
-    override func loadView() {
-        super.loadView()
-        
-        configureNavigationBar()
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        configureNavigationBar()
         configureScanner()
     }
     
@@ -29,20 +24,29 @@ class QRCodeScannerViewController: UIViewController {
         
         applyTheme()
     }
+}
 
+// MARK: - Navigatoin Bar
+extension QRCodeScannerViewController {
+    private func configureNavigationBar() {
+        title = "Scanner"
+        navigationItem.largeTitleDisplayMode = .never
+    }
+}
+
+// MARK: - Scanner
+extension QRCodeScannerViewController {
     private func configureScanner() {
         guard let videoDevice = AVCaptureDevice.default(for: .video) else {
-            showAlert(message: "Your device does not have a camera.")
+            presentAlert(message: "Your device does not have a camera.")
             return
         }
-
         guard let videoInput = try? AVCaptureDeviceInput(device: videoDevice) else {
-            showAlert(message: "Unable to access the camera.")
+            presentAlert(message: "Unable to access the camera.")
             return
         }
-
         guard captureSession.canAddInput(videoInput) else {
-            showAlert(message: "Unable to configure camera input.")
+            presentAlert(message: "Unable to configure camera input.")
             return
         }
 
@@ -51,7 +55,7 @@ class QRCodeScannerViewController: UIViewController {
         let metadataOutput = AVCaptureMetadataOutput()
 
         guard captureSession.canAddOutput(metadataOutput) else {
-            showAlert(message: "Unable to configure scanner output.")
+            presentAlert(message: "Unable to configure scanner output.")
             return
         }
 
@@ -61,7 +65,27 @@ class QRCodeScannerViewController: UIViewController {
         
         configurePreviewLayer()
     }
+    
+    private func presentAlert(message: String) {
+        let alertController = UIAlertController(
+            title: "Scanning not supported",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        })
+        
+        let alertView = alertController.view
+        alertView?.tintColor = currentTheme.tintColor
+        
+        present(alertController, animated: true)
+    }
+}
 
+// MARK: - Preiew Layer
+extension QRCodeScannerViewController {
     private func configurePreviewLayer() {
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         view.layer.addSublayer(previewLayer)
@@ -71,27 +95,9 @@ class QRCodeScannerViewController: UIViewController {
 
         captureSession.startRunning()
     }
-
-    private func showAlert(message: String) {
-        let alertController = UIAlertController(
-            title: "Scanning not supported",
-            message: message,
-            preferredStyle: .alert
-        )
-        
-        
-        alertController.addAction(UIAlertAction(title: "OK", style: .default) { _ in
-            self.navigationController?.popViewController(animated: true)
-        })
-        
-        let alertView = alertController.view
-        alertView?.tintColor = currentTheme.tintColor
-//        alertView?.subviews.first?.subviews.first?.subviews.first?.backgroundColor = currentTheme.backgroundColor
-
-        present(alertController, animated: true)
-    }
 }
 
+// MARK: - Metadata Output
 extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         captureSession.stopRunning()
@@ -111,14 +117,7 @@ extension QRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
     }
 }
 
-// MARK: - Navigatoin bar
-extension QRCodeScannerViewController {
-    private func configureNavigationBar() {
-        title = "Scanner"
-        navigationItem.largeTitleDisplayMode = .never
-    }
-}
-
+// MARK: - Theme
 extension QRCodeScannerViewController: Themeable {
     func applyTheme() {
         view.backgroundColor = currentTheme.backgroundColor
