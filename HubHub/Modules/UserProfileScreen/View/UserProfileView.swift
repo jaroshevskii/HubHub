@@ -11,22 +11,19 @@ import SnapKit
 class UserProfileView: UIView {
     var model: UserProfileData? {
         didSet {
-            if let model { handle(model) }
+            guard let model else { return }
+            
+            handleAvatar(with: model.avatarURL)
+            handleQRCode(for: model.login)
+            handleSections(with: model)
         }
     }
     
-    private var avatarImage: UIImage?
-    private var qrCodeImage: UIImage?
+    var avatarImage: UIImage?
+    var qrCodeImage: UIImage?
     
-    private let openGitHubButton: UIButton = {
-        let obj = UIButton(type: .system)
-        obj.setImage(UIImage(systemName: "safari"), for: .normal)
-        return obj
-    }()
-    
-    var avatarImageView: UIImageView = {
+    lazy var avatarImageView: UIImageView = {
         let obj = UIImageView()
-        obj.isUserInteractionEnabled = true
         obj.layer.masksToBounds = true
         obj.backgroundColor = .secondarySystemBackground
         return obj
@@ -80,11 +77,6 @@ class UserProfileView: UIView {
     }
      
     private func setup() {
-        avatarImageView.addGestureRecognizer(UITapGestureRecognizer(
-            target: self,
-            action: #selector(toggleAvatarImage)
-        ))
-                
         addSubview(avatarImageView)
         containerStackView.addArrangedSubview(loginSectionView)
         containerStackView.addArrangedSubview(nameSectionView)
@@ -95,54 +87,41 @@ class UserProfileView: UIView {
         addSubview(loadingIndicatorView)
         
         makeConstraints()
+        remakeConstraintsByOrientation()
     }
     
     private func makeConstraints() {
-        avatarImageView.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).inset(16)
-            make.centerX.equalToSuperview()
-            make.size.equalTo(196)
-        }
-        
-        containerStackView.snp.makeConstraints { make in
-            make.top.equalTo(avatarImageView.snp.bottom).offset(16)
-            make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
-        }
-        
-        loadingIndicatorView.snp.makeConstraints { make in
+        loadingIndicatorView.snp.remakeConstraints { make in
             make.center.equalToSuperview()
             make.size.equalToSuperview()
         }
     }
-    
-    @objc func toggleAvatarImage() {
-        guard let avatarImage = avatarImage, let qrCodeImage = qrCodeImage else { return }
-        
-        if avatarImageView.image == avatarImage {
-            avatarImageView.layer.minificationFilter = .nearest
-            avatarImageView.layer.magnificationFilter = .nearest
-            
-            UIView.transition(
-                with: avatarImageView,
-                duration: 0.5,
-                options: .transitionFlipFromRight,
-                animations: { [self] in
-                    avatarImageView.image = qrCodeImage
-                    avatarImageView.layer.cornerRadius = 0
 
-                })
-        } else {
-            avatarImageView.layer.minificationFilter = .linear
-            avatarImageView.layer.magnificationFilter = .linear
+    func remakeConstraintsByOrientation() {
+        let isPortraitOrientation = UIScreen.main.bounds.size.width < UIScreen.main.bounds.size.height
+        if isPortraitOrientation {
+            avatarImageView.snp.remakeConstraints { make in
+                make.size.equalTo(196)
+                make.top.equalTo(safeAreaLayoutGuide).inset(16)
+                make.centerX.equalToSuperview()
+            }
             
-            UIView.transition(
-                with: avatarImageView,
-                duration: 0.5,
-                options: .transitionFlipFromLeft,
-                animations: { [self] in
-                    avatarImageView.image = avatarImage
-                    avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
-                })
+            containerStackView.snp.remakeConstraints { make in
+                make.top.equalTo(avatarImageView.snp.bottom).offset(16)
+                make.leading.trailing.equalTo(safeAreaLayoutGuide).inset(16)
+            }
+        } else {
+            avatarImageView.snp.remakeConstraints { make in
+                make.size.equalTo(196)
+                make.top.equalTo(safeAreaLayoutGuide).inset(16)
+                make.centerX.equalTo(safeAreaLayoutGuide).multipliedBy(0.5)
+            }
+            
+            containerStackView.snp.remakeConstraints { make in
+                make.top.equalTo(safeAreaLayoutGuide).offset(16)
+                make.leading.equalTo(safeAreaLayoutGuide.snp.trailing).multipliedBy(0.5).inset(16)
+                make.trailing.equalTo(safeAreaLayoutGuide).inset(16)
+            }
         }
     }
 }
@@ -164,19 +143,22 @@ extension UserProfileView {
 
 // MARK: - Hendlers
 extension UserProfileView {
-    private func handle(_ model: UserProfileData) {
+    private func handleAvatar(with avatarURL: String) {
         avatarImageView.kf.setImage(
-            with: URL(string: model.avatarURL),
-            options: [
-                .transition(.fade(0.25)),
-            ],
+            with: URL(string: avatarURL),
+            options: [.transition(.fade(0.25))],
             completionHandler: { _ in
                 self.avatarImage = self.avatarImageView.image
-            })
+            }
+        )
         avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
-        
-        qrCodeImage = GitHubAPIManager.shared.generateQRCode(for: model.login)
-                
+    }
+    
+    private func handleQRCode(for login: String) {
+        qrCodeImage = GitHubAPIManager.shared.generateQRCode(for: login)
+    }
+    
+    private func handleSections(with model: UserProfileData) {
         loginSectionView.model = model.login
         nameSectionView.model = model.name
         companySectionView.model = model.company

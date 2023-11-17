@@ -43,7 +43,7 @@ class MainTabBarController: UITabBarController {
             settingsNavigationController,
         ], animated: true)
         
-        selectedViewController = settingsNavigationController
+        selectedViewController = userProfileNavigationController
     }
     
     override func viewWillAppear(_ animated: Bool) {

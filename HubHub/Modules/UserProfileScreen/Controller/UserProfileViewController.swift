@@ -27,11 +27,13 @@ class UserProfileViewController: UIViewController {
         super.loadView()
     
         view = mainView
-        configureNavigationBar()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        configureNavigationBar()
+        configureAvatarImage()
         
         loadData()
     }
@@ -43,7 +45,7 @@ class UserProfileViewController: UIViewController {
     }
 }
 
-// MARK: - Navigatoin bar
+// MARK: - Navigatoin Bar
 extension UserProfileViewController {
     private func configureNavigationBar() {
         title = "Profile"
@@ -52,12 +54,54 @@ extension UserProfileViewController {
             image: UIImage(systemName: "safari"),
             style: .plain,
             target: self,
-            action: #selector(openGitHub)
+            action: #selector(didPressOpenGitHubButton)
         )
     }
     
-    @objc private func openGitHub() {
+    @objc private func didPressOpenGitHubButton() {
         GitHubAPIManager.shared.open(for: login)
+    }
+}
+
+// MARK: - Avatar Image
+extension UserProfileViewController {
+    private func configureAvatarImage() {
+        mainView.avatarImageView.isUserInteractionEnabled = true
+        mainView.avatarImageView.addGestureRecognizer(UITapGestureRecognizer(
+            target: self,
+            action: #selector(toggleAvatarImage)
+        ))
+    }
+    
+    @objc func toggleAvatarImage() {
+        guard let avatarImage = mainView.avatarImage, let qrCodeImage = mainView.qrCodeImage else { return }
+        
+        if mainView.avatarImageView.image == avatarImage {
+            mainView.avatarImageView.layer.minificationFilter = .nearest
+            mainView.avatarImageView.layer.magnificationFilter = .nearest
+            
+            UIView.transition(
+                with: mainView.avatarImageView,
+                duration: 0.5,
+                options: .transitionFlipFromRight,
+                animations: { [self] in
+                    mainView.avatarImageView.image = qrCodeImage
+                    mainView.avatarImageView.layer.cornerRadius = 0
+
+                })
+        } else {
+            mainView.avatarImageView.layer.minificationFilter = .linear
+            mainView.avatarImageView.layer.magnificationFilter = .linear
+            
+            UIView.transition(
+                with: mainView.avatarImageView,
+                duration: 0.5,
+                options: .transitionFlipFromLeft,
+                animations: { [self] in
+                    mainView.avatarImageView.image = avatarImage
+                    mainView.avatarImageView.layer.cornerRadius = mainView.avatarImageView.bounds.height / 2
+                })
+        }
     }
 }
 
@@ -78,10 +122,20 @@ extension UserProfileViewController {
     }
 }
 
+// MARK: - Theme
 extension UserProfileViewController: Themeable {
     func applyTheme() {
         navigationItem.rightBarButtonItem?.tintColor = currentTheme.tintColor
         navigationController?.navigationBar.tintColor = currentTheme.tintColor
         mainView.applyTheme()
+    }
+}
+
+// MARK: - Device Chanege Orientation
+extension UserProfileViewController {
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        mainView.remakeConstraintsByOrientation()
     }
 }
