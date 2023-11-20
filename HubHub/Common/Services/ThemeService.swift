@@ -18,7 +18,12 @@ struct ThemeService {
     /// the change in user defaults and applies the theme to all open windows.
     static var currentTheme: Theme {
         get {
-            cachedTheme ?? loadThemeFromUserDefaults()
+            guard let cachedTheme else {
+                let loadedTheme = loadThemeFromUserDefaults()
+                cachedTheme = loadedTheme
+                return loadedTheme
+            }
+            return cachedTheme
         }
         set(newTheme) {
             cachedTheme = newTheme
@@ -26,6 +31,7 @@ struct ThemeService {
             applyThemeToAllWindows(newTheme)
         }
     }
+
     
     /// The cached theme that is loaded from UserDefaults.
     ///
