@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import CoreImage.CIFilterBuiltins
 
 class UserProfileViewController: UIViewController {
     private let mainView = UserProfileView()
@@ -59,7 +58,7 @@ extension UserProfileViewController {
     }
     
     @objc private func didPressOpenGitHubButton() {
-        GitHubAPIManager.shared.open(for: login)
+        GitHubLinkManager.shared.openProfile(for: login)
     }
 }
 

@@ -155,7 +155,7 @@ extension UserProfileView {
     }
     
     private func handleQRCode(for login: String) {
-        qrCodeImage = GitHubAPIManager.shared.generateQRCode(for: login)
+        qrCodeImage = GitHubQRCodeManager.shared.generate(for: login)
     }
     
     private func handleSections(with model: UserProfileData) {

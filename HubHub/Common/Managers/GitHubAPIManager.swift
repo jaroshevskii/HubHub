@@ -54,37 +54,3 @@ struct GitHubAPIManager {
         }
     }
 }
-
-// TODO: - move to service
-
-// MARK: - User Actions
-extension GitHubAPIManager {
-    /// Opens the GitHub profile page for a given user login.
-    ///
-    /// - Parameter login: The GitHub login of the user to open.
-    func open(for login: String) {
-        guard let usersURL = GitHubAPI.homeURL else { return }
-        UIApplication.shared.open(usersURL.appendingPathComponent(login))
-    }
-}
-
-// MARK: - QR Code Generation
-extension GitHubAPIManager {
-    /// Generates a QR code representing the GitHub profile for a given user login.
-    ///
-    /// - Parameter login: The GitHub login for which to generate the QR code.
-    /// - Returns: The generated QR code as a UIImage, or nil if generation fails.
-    func generateQRCode(for login: String) -> UIImage? {
-        guard let userURL = GitHubAPI.homeURL?.appendingPathComponent(login) else { return nil }
-
-        let context = CIContext()
-        let filter = CIFilter.qrCodeGenerator()
-        filter.message = Data(userURL.absoluteString.utf8)
-
-        guard let outputImage = filter.outputImage,
-              let cgImage = context.createCGImage(outputImage, from: outputImage.extent)
-        else { return nil }
-
-        return UIImage(cgImage: cgImage)
-    }
-}
