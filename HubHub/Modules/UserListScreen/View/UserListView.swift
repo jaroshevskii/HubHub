@@ -15,7 +15,7 @@ class UserListView: UIView {
         return obj
     }()
     
-    let tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let obj = UITableView()
         obj.tableFooterView = loadingMoreUsersIndicatorView
         return obj

@@ -10,7 +10,7 @@ import UIKit
 /// Manages the application's themes.
 struct ThemeService {
     /// The default theme for the application.
-    static var defaultTheme: Theme = .dracula
+    static let defaultTheme: Theme = .dracula
     
     /// The current theme applied to the application.
     ///
@@ -43,7 +43,7 @@ extension ThemeService {
         guard let savedThemeData = UserDefaults.standard.object(forKey: "Theme") as? Data,
               let loadedTheme = try? JSONDecoder().decode(Theme.self, from: savedThemeData) else {
             print("Failed to decode Theme from UserDefaults. Using default theme.")
-            return ThemeService.defaultTheme
+            return Self.defaultTheme
         }
         
         print("Theme loaded successfully from UserDefaults")
