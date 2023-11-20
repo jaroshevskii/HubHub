@@ -18,7 +18,7 @@ protocol Themeable {
 
 // MARK: - Default Implementation
 extension Themeable {
-    /// The current theme applied to the object. Defaults to the shared theme from `ThemeManager`.
+    /// The current theme applied to the object. Defaults to the shared theme from `ThemeService`.
     var currentTheme: Theme {
         get { ThemeService.currentTheme }
         set { ThemeService.currentTheme = newValue }
