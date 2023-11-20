@@ -23,7 +23,7 @@ struct ThemeService {
         set(newTheme) {
             cachedTheme = newTheme
             saveThemeToUserDefaults(newTheme)
-            applyThemeToAllWindows()
+            applyThemeToAllWindows(newTheme)
         }
     }
     
@@ -63,11 +63,13 @@ extension ThemeService {
         }
     }
     
-    /// Applies the current theme to all application windows.
-    private static func applyThemeToAllWindows() {
+    /// Applies the given theme to all application windows.
+    ///
+    /// - Parameter theme: The theme to be applied.
+    private static func applyThemeToAllWindows(_ theme: Theme) {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             windowScene.windows.forEach { window in
-                window.overrideUserInterfaceStyle = currentTheme.userInterfaceStyle
+                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
             }
         }
     }
