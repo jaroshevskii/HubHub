@@ -18,13 +18,20 @@ struct ThemeService {
     /// the change in user defaults and applies the theme to all open windows.
     static var currentTheme: Theme {
         get {
-            loadThemeFromUserDefaults()
+            cachedTheme ?? loadThemeFromUserDefaults()
         }
         set(newTheme) {
+            cachedTheme = newTheme
             saveThemeToUserDefaults(newTheme)
             applyThemeToAllWindows()
         }
     }
+    
+    /// The cached theme that is loaded from UserDefaults.
+    ///
+    /// This property is used to store the currently loaded theme to avoid unnecessary
+    /// repeated loading from UserDefaults, improving performance.
+    private static var cachedTheme: Theme?
 }
 
 // MARK: Setvice Logic
