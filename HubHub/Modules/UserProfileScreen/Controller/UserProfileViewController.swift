@@ -69,6 +69,7 @@ extension UserProfileViewController {
         mainView.avatarImageView.isUserInteractionEnabled = true
         mainView.avatarImageView.addGestureRecognizer(UITapGestureRecognizer(
             target: self,
+            // TODO: - create action
             action: #selector(toggleAvatarImage)
         ))
     }

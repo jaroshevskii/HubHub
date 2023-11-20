@@ -49,9 +49,24 @@ extension UserListViewController {
         )
     }
     
+    // TODO: - move to actions
     @objc private func openQRCodeScanner() {
         navigationController?.pushViewController(QRCodeScannerViewController(), animated: true)
     }
+}
+
+// MARK: - Actions
+extension UserListViewController {
+    @objc
+    private func didRefreshControlValueChanged() {
+        refreshData()
+    }
+}
+
+
+// MARK: - Navigation
+extension UserListViewController {
+    // TODO: - fill
 }
 
 // MARK: - Table View
@@ -62,7 +77,7 @@ extension UserListViewController: UITableViewDataSource, UITableViewDelegate {
         mainView.tableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.identifier)
         
         let tableRefreshControll = UIRefreshControl()
-        tableRefreshControll.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        tableRefreshControll.addTarget(self, action: #selector(didRefreshControlValueChanged), for: .valueChanged)
         mainView.tableView.refreshControl = tableRefreshControll
     }
     
@@ -122,7 +137,9 @@ extension UserListViewController {
         }
     }
     
-    @objc private func refreshData() {
+
+    
+    private func refreshData() {
         GitHubAPIManager.shared.fetchUsersTableData() { [self] result in
             switch result {
             case .success(let userTableDatas):

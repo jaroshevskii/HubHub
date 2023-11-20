@@ -35,7 +35,7 @@ class UserProfileView: UIView {
     }()
     
     private let nameSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(icon: .name, title: "Name")
+        let obj = UserProfileSectionView(icon: .name, title: "Name")   
         return obj
     }()
     

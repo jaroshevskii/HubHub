@@ -21,6 +21,7 @@ class UserTableViewCell: UITableViewCell {
     let avatarImageView: UIImageView = {
         let obj = UIImageView()
         obj.backgroundColor = .secondarySystemBackground
+        obj.clipsToBounds = true
         return obj
     }()
     
@@ -93,7 +94,6 @@ class UserTableViewCell: UITableViewCell {
         super.layoutSubviews()
         
         avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
-        avatarImageView.clipsToBounds = true
         avatarImageView.layoutIfNeeded()
     }
 }

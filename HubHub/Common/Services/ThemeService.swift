@@ -16,52 +16,64 @@ struct ThemeService {
     ///
     /// When you set a new theme, it not only updates the current theme but also persists
     /// the change in user defaults and applies the theme to all open windows.
-    static var currentTheme: Theme {
-        get {
-            cachedTheme ?? loadThemeFromUserDefaults()
-        }
-        set(newTheme) {
-            cachedTheme = newTheme
-            saveThemeToUserDefaults(newTheme)
-            applyThemeToAllWindows(newTheme)
+    static var currentTheme: Theme = cachedTheme {
+        didSet {
+            cachedTheme = currentTheme
+            applyThemeToAllWindows(currentTheme)
         }
     }
+
     
     /// The cached theme that is loaded from UserDefaults.
     ///
     /// This property is used to store the currently loaded theme to avoid unnecessary
     /// repeated loading from UserDefaults, improving performance.
-    private static var cachedTheme: Theme?
+//    private static var cachedTheme: Theme?
+    
+    
+    private static var cachedTheme: Theme {
+        get {
+            guard let savedThemeData = UserDefaults.standard.object(forKey: "Theme") as? Data,
+                  let loadedTheme = try? JSONDecoder().decode(Theme.self, from: savedThemeData) else {
+                print("Failed to decode Theme from UserDefaults. Using default theme.")
+                return Self.defaultTheme
+            }
+            
+            print("Theme loaded successfully from UserDefaults")
+            return loadedTheme
+        }
+        
+        set {
+            if let encoded = try? JSONEncoder().encode(newValue) {
+                UserDefaults.standard.set(encoded, forKey: "Theme")
+            }
+        }
+    }
 }
 
 // MARK: Setvice Logic
 extension ThemeService {
-    /// Loads the theme from UserDefaults or returns the default theme if loading fails.
-    ///
-    /// - Returns: The loaded theme or the default theme if loading fails.
-    private static func loadThemeFromUserDefaults() -> Theme {
-        guard let savedThemeData = UserDefaults.standard.object(forKey: "Theme") as? Data,
-              let loadedTheme = try? JSONDecoder().decode(Theme.self, from: savedThemeData) else {
-            print("Failed to decode Theme from UserDefaults. Using default theme.")
-            return Self.defaultTheme
-        }
-        
-        print("Theme loaded successfully from UserDefaults")
-        return loadedTheme
-    }
-    
-    /// Saves the specified theme to UserDefaults.
-    ///
-    /// - Parameter theme: The theme to be saved.
-    private static func saveThemeToUserDefaults(_ theme: Theme) {
-        do {
-            let encoded = try JSONEncoder().encode(theme)
-            UserDefaults.standard.set(encoded, forKey: "Theme")
-            print("Saved theme to UserDefaults")
-        } catch {
-            print("Failed to encode theme: \(error)")
-        }
-    }
+//    
+//    /// Loads the theme from UserDefaults or returns the default theme if loading fails.
+//    ///
+//    /// - Returns: The loaded theme or the default theme if loading fails.
+//    private static func loadThemeFromUserDefaults() -> Theme {
+//        guard let savedThemeData = UserDefaults.standard.object(forKey: "Theme") as? Data,
+//              let loadedTheme = try? JSONDecoder().decode(Theme.self, from: savedThemeData) else {
+//            print("Failed to decode Theme from UserDefaults. Using default theme.")
+//            return Self.defaultTheme
+//        }
+//        
+//        print("Theme loaded successfully from UserDefaults")
+//        return loadedTheme
+//    }
+//    
+//    /// Saves the specified theme to UserDefaults.
+//    ///
+//    /// - Parameter theme: The theme to be saved.
+//    private static func saveThemeToUserDefaults(_ theme: Theme) {
+//    
+//    }
     
     /// Applies the given theme to all application windows.
     ///

@@ -55,6 +55,8 @@ struct GitHubAPIManager {
     }
 }
 
+// TODO: - move to service
+
 // MARK: - User Actions
 extension GitHubAPIManager {
     /// Opens the GitHub profile page for a given user login.

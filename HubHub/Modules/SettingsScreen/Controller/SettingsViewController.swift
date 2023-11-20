@@ -7,34 +7,6 @@
 
 import UIKit
 
-enum SettingsSection: Titleable, CaseIterable {
-    case `default`
-    case custom
-    
-    enum SettingCell: Titleable {
-        case light
-        case dark
-        case dracula
-        
-        case backgroundColor
-        case tintColor
-    }
-    
-    var cells: [SettingCell] {
-        switch self {
-        case .default:
-            return [.light, .dark, .dracula]
-        case .custom:
-            return [.backgroundColor, .tintColor]
-        }
-    }
-}
-
-enum ColorPickerType {
-    case background
-    case tint
-}
-
 class SettingsViewController: UIViewController {
     private let sections = SettingsSection.allCases
     private var sectionsOpenState: [SettingsSection: Bool] = [
@@ -44,11 +16,6 @@ class SettingsViewController: UIViewController {
     
     var delegate: SettingsViewControllerDelegate?
     var selectedPickerType: ColorPickerType?
-
-    enum ColorPickerType {
-        case background
-        case tint
-    }
     
     private let mainView = SettingsView()
 
@@ -168,6 +135,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         let selectedSection = sections[indexPath.section]
         let selectedCell = selectedSection.cells[indexPath.row]
         
+        // MARK: - Move
         switch selectedCell {
         case .light:
             changeTheme(to: .light)
@@ -185,6 +153,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // MARK: - Move
     func presentColorPicker() {
         let colorPickerViewController = UIColorPickerViewController()
         colorPickerViewController.delegate = self
