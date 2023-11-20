@@ -16,10 +16,26 @@ struct ThemeService {
     ///
     /// When you set a new theme, it not only updates the current theme but also persists
     /// the change in user defaults and applies the theme to all open windows.
+<<<<<<< HEAD
     static var currentTheme: Theme = cachedTheme {
         didSet {
             cachedTheme = currentTheme
             applyThemeToAllWindows(currentTheme)
+=======
+    static var currentTheme: Theme {
+        get {
+            guard let cachedTheme else {
+                let loadedTheme = loadThemeFromUserDefaults()
+                cachedTheme = loadedTheme
+                return loadedTheme
+            }
+            return cachedTheme
+        }
+        set(newTheme) {
+            cachedTheme = newTheme
+            saveThemeToUserDefaults(newTheme)
+            applyThemeToAllWindows(newTheme)
+>>>>>>> 1ee5e7cfb013b4fd0f5c185906190b9ca69db69e
         }
     }
 
