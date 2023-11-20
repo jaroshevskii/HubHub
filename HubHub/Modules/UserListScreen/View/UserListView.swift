@@ -17,6 +17,7 @@ class UserListView: UIView {
     
     let tableView: UITableView = {
         let obj = UITableView()
+        obj.tableFooterView = loadingMoreUsersIndicatorView
         return obj
     }()
     
@@ -31,8 +32,6 @@ class UserListView: UIView {
     }
     
     private func setup() {
-        tableView.tableFooterView = loadingMoreUsersIndicatorView
-        
         addSubview(tableView)
         
         makeConstraints()

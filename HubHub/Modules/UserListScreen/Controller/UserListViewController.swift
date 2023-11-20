@@ -141,9 +141,7 @@ extension UserListViewController {
 extension UserListViewController: Themeable {
     func applyTheme() {
         navigationItem.rightBarButtonItem?.tintColor = currentTheme.tintColor
-
-
-
+        
         mainView.applyTheme()
         mainView.tableView.reloadData()
     }

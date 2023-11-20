@@ -114,6 +114,7 @@ extension UserTableViewCell {
     }
 }
 
+// MARK: - Theme
 extension UserTableViewCell: Themeable {
     func applyTheme() {
         backgroundColor = currentTheme.backgroundColor
