@@ -17,7 +17,7 @@ class MainTabBarController: UITabBarController {
     
     private lazy var userProfileNavigationController: UINavigationController = {
         let obj = UINavigationController(
-            rootViewController: UserProfileViewController(login: "jaroshevskii")
+            rootViewController: UserProfileViewController(login: "octocat")
         )
         obj.tabBarItem.image = UIImage(systemName: "person")
         obj.tabBarItem.title = "Profile"
