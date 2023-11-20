@@ -20,7 +20,7 @@ import Foundation
 ///     }
 ///
 ///     let bookGenres: [BookGenre] = [.mystery, .romance, .scienceFiction]
-///     let genreTitles = bookGenres.map { $0.title }
+///     let genreTitles = bookGenres.map { $0.title }.joined(separator: ", ")
 ///
 ///     print(genreTitles)
 ///     // Prints "Mystery, Romance, Science Fiction"
