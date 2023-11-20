@@ -10,7 +10,7 @@ import UIKit
 class SettingsViewController: UIViewController {
     private let sections = SettingsSection.allCases
     private var sectionsOpenState: [SettingsSection: Bool] = [
-        .default: true,
+        .standard: true,
         .custom: true,
     ]
     
@@ -22,7 +22,6 @@ class SettingsViewController: UIViewController {
     private lazy var colorPickerViewController: UIColorPickerViewController = {
         let obj = UIColorPickerViewController()
         obj.delegate = self
-        obj.selectedColor = currentTheme.backgroundColor
         return obj
     }()
     
@@ -54,15 +53,18 @@ extension SettingsViewController {
     }
 }
 
-// MARK: - Table View
-extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
+// MARK: - Table View Configuration
+extension SettingsViewController {
     private func configureTableView() {
         mainView.tableView.dataSource = self
         mainView.tableView.delegate = self
         mainView.tableView.register(SettingsCellView.self, forCellReuseIdentifier: "SettingsCell")
         mainView.tableView.register(SettingsSectionHeaderView.self, forHeaderFooterViewReuseIdentifier: "SettingsSectionHeader")
     }
-    
+}
+
+// MARK: - Table View Data Source
+extension SettingsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return sections.count
     }
@@ -74,10 +76,10 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             return 0
         }
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cellView = tableView.dequeueReusableCell(withIdentifier: "SettingsCell")
-            as? SettingsCellView else { return SettingsCellView() }
+                as? SettingsCellView else { return SettingsCellView() }
         
         let section = sections[indexPath.section]
         let cell = section.cells[indexPath.row]
@@ -88,10 +90,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         return cellView
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 48
-    }
-
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SettingsSectionHeader") as? SettingsSectionHeaderView else {
             return UITableViewHeaderFooterView()
@@ -100,15 +98,41 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.model = sections[section].title
         headerView.addGestureRecognizer(UITapGestureRecognizer(
             target: self,
-            action: #selector(toggleSection(_:))
+            action: #selector(didTapOnHeaderInSection)
         ))
         headerView.tag = section
         headerView.applyTheme()
         
         return headerView
     }
+}
+
+// MARK: - Table View Delegate
+extension SettingsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 48
+    }
     
-    @objc func toggleSection(_ sender: UITapGestureRecognizer) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        let selectedSection = sections[indexPath.section]
+        let selectedCell = selectedSection.cells[indexPath.row]
+        
+        handleSelectedCell(type: selectedCell)
+    }
+}
+
+// MARK: - User Actions
+extension SettingsViewController {
+    @objc func didTapOnHeaderInSection(_ sender: UITapGestureRecognizer) {
+        toggleSection(sender)
+    }
+}
+
+// MARK: - Section Toggling
+extension SettingsViewController {
+    func toggleSection(_ sender: UITapGestureRecognizer) {
         guard let headerView = sender.view as? SettingsSectionHeaderView else { return }
 
         let section = headerView.tag
@@ -116,7 +140,7 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
 
         let numberOfRows = sections[section].cells.count
         let indexPaths = (0..<numberOfRows).map { IndexPath(row: $0, section: section) }
-        
+
         if let isOpen = sectionsOpenState[sections[section]] {
             mainView.tableView.performBatchUpdates {
                 headerView.animateDecorImage(isOpen)
@@ -128,15 +152,30 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        let selectedSection = sections[indexPath.section]
-        let selectedCell = selectedSection.cells[indexPath.row]
-        
-        // MARK: - Move
-        switch selectedCell {
+}
+
+// MARK: - Color Picker Presentation
+extension SettingsViewController {
+    func presentColorPicker() {
+        let colorPickerViewController = UIColorPickerViewController()
+        colorPickerViewController.delegate = self
+
+        switch selectedPickerType {
+        case .background:
+            colorPickerViewController.selectedColor = currentTheme.backgroundColor
+        case .tint:
+            colorPickerViewController.selectedColor = currentTheme.tintColor
+        default: break
+        }
+
+        present(colorPickerViewController, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Handle Selected Cell
+extension SettingsViewController {
+    private func handleSelectedCell(type: SettingsSection.SettingCell) {
+        switch type {
         case .light:
             changeTheme(to: .light)
         case .dark:
@@ -151,22 +190,6 @@ extension SettingsViewController: UITableViewDelegate, UITableViewDataSource {
             selectedPickerType = .tint
             presentColorPicker()
         }
-    }
-    
-    // MARK: - Move
-    func presentColorPicker() {
-        let colorPickerViewController = UIColorPickerViewController()
-        colorPickerViewController.delegate = self
-
-        switch selectedPickerType {
-        case .background:
-            colorPickerViewController.selectedColor = currentTheme.backgroundColor
-        case .tint:
-            colorPickerViewController.selectedColor = currentTheme.tintColor
-        default: break
-        }
-        
-        present(colorPickerViewController, animated: true, completion: nil)
     }
 }
 
@@ -191,6 +214,7 @@ extension SettingsViewController: UIColorPickerViewControllerDelegate {
 // MARK: - Theme
 extension SettingsViewController: Themeable {
     func applyTheme() {
+        colorPickerViewController.selectedColor = currentTheme.backgroundColor
         mainView.applyTheme()
     }
     

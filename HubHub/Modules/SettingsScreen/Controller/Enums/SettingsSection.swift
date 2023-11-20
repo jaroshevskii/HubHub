@@ -2,13 +2,13 @@
 //  SettingsSection.swift
 //  HubHub
 //
-//  Created by jaroshevskii on 20.11.2023.
+//  Created by Sasha Jaroshevskii on 20.11.2023.
 //
 
 import Foundation
 
 enum SettingsSection: Titleable, CaseIterable {
-    case `default`
+    case standard
     case custom
     
     enum SettingCell: Titleable {
@@ -22,7 +22,7 @@ enum SettingsSection: Titleable, CaseIterable {
     
     var cells: [SettingCell] {
         switch self {
-        case .default:
+        case .standard:
             return [.light, .dark, .dracula]
         case .custom:
             return [.backgroundColor, .tintColor]

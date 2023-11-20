@@ -128,13 +128,13 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		84E013832B0B6780003D0840 /* Enum */ = {
+		84E013832B0B6780003D0840 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
 				84E013842B0B678C003D0840 /* SettingsSection.swift */,
 				84E013862B0B679F003D0840 /* ColorPickerType.swift */,
 			);
-			path = Enum;
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		8B5E94CB2AE954910087958E /* Common */ = {
@@ -362,7 +362,7 @@
 		8BC0AFA12AEFF3780086BD17 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				84E013832B0B6780003D0840 /* Enum */,
+				84E013832B0B6780003D0840 /* Enums */,
 				8BA47D802AF8DE4E00E34286 /* Delegate */,
 				8BC0AFA32AEFF3D00086BD17 /* SettingsViewController.swift */,
 			);
