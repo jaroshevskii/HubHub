@@ -154,9 +154,9 @@
 		8B5E94CC2AE954A30087958E /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				8BC54AA42AEBBB6100B4EC6A /* QRCodeScannerScreen */,
 				8BC0AFA02AEFF34B0086BD17 /* SettingsScreen */,
 				8B72B0642AD93B64008A757A /* UserListScreen */,
-				8BC54AA42AEBBB6100B4EC6A /* QRCodeScannerScreen */,
 				8B72B0452AD03831008A757A /* UserProfileScreen */,
 			);
 			path = Modules;
