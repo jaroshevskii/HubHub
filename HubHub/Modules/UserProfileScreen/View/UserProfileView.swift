@@ -30,27 +30,27 @@ class UserProfileView: UIView {
     }()
     
     private let loginSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(icon: .login, title: "Login")
+        let obj = UserProfileSectionView(title: "Login", icon: .login)
         return obj
     }()
     
     private let nameSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(icon: .name, title: "Name")   
+        let obj = UserProfileSectionView(title: "Login", icon: .name)
         return obj
     }()
     
     private let companySectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(icon: .company, title: "Company")
+        let obj = UserProfileSectionView(title: "Login", icon: .company)
         return obj
     }()
     
     private let blogSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(icon: .blog, title: "Blog")
+        let obj = UserProfileSectionView(title: "Login", icon: .blog)
         return obj
     }()
     
     private let locationSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(icon: .location, title: "Location")
+        let obj = UserProfileSectionView(title: "Login", icon: .location)
         return obj
     }()
     
@@ -149,8 +149,7 @@ extension UserProfileView {
             options: [.transition(.fade(0.25))],
             completionHandler: { _ in
                 self.avatarImage = self.avatarImageView.image
-            }
-        )
+            })
         avatarImageView.layer.cornerRadius = avatarImageView.bounds.height / 2
     }
     

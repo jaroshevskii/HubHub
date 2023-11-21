@@ -41,9 +41,9 @@ class UserProfileSectionView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(icon: SectionIcon, title: String) {
-        self.iconImageView.image = icon.image
+    init(title: String, icon: SectionIcon) {
         self.titleLabel.text = title
+        self.iconImageView.image = icon.image
         
         super.init(frame: .zero)
         
@@ -79,6 +79,7 @@ class UserProfileSectionView: UIView {
     }
 }
 
+// MARK: - Section Icon
 extension UserProfileSectionView {
     enum SectionIcon {
         case login
@@ -101,6 +102,7 @@ extension UserProfileSectionView {
     }
 }
 
+// MARK: - Theme
 extension UserProfileSectionView: Themeable {
     func applyTheme() {
         iconImageView.tintColor = currentTheme.tintColor

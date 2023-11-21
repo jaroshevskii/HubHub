@@ -53,12 +53,8 @@ extension UserProfileViewController {
             image: UIImage(systemName: "safari"),
             style: .plain,
             target: self,
-            action: #selector(didPressOpenGitHubButton)
+            action: #selector(didTapOpenGitHubProfileButton)
         )
-    }
-    
-    @objc private func didPressOpenGitHubButton() {
-        GitHubLinkManager.shared.openProfile(for: login)
     }
 }
 
@@ -68,13 +64,14 @@ extension UserProfileViewController {
         mainView.avatarImageView.isUserInteractionEnabled = true
         mainView.avatarImageView.addGestureRecognizer(UITapGestureRecognizer(
             target: self,
-            // TODO: - create action
-            action: #selector(toggleAvatarImage)
+            action: #selector(didTapAvatarImage)
         ))
     }
     
-    @objc func toggleAvatarImage() {
-        guard let avatarImage = mainView.avatarImage, let qrCodeImage = mainView.qrCodeImage else { return }
+    func toggleAvatarImage() {
+        guard let avatarImage = mainView.avatarImage,
+              let qrCodeImage = mainView.qrCodeImage
+        else { return }
         
         if mainView.avatarImageView.image == avatarImage {
             mainView.avatarImageView.layer.minificationFilter = .nearest
@@ -102,6 +99,17 @@ extension UserProfileViewController {
                     mainView.avatarImageView.layer.cornerRadius = mainView.avatarImageView.bounds.height / 2
                 })
         }
+    }
+}
+
+// MARK: - User Actions
+extension UserProfileViewController {
+    @objc private func didTapOpenGitHubProfileButton() {
+        GitHubLinkManager.shared.openProfile(for: login)
+    }
+    
+    @objc private func didTapAvatarImage() {
+        toggleAvatarImage()
     }
 }
 
