@@ -15,16 +15,17 @@ import Foundation
 /// The protocol includes a default implementation that generates a title
 /// based on the capitalized description of the conforming type:
 ///
-///     enum BookGenre: Titleable {
-///         case mystery, romance, scienceFiction
-///     }
+/// ```swift
+/// enum BookGenre: Titleable {
+///     case mystery, romance, scienceFiction
+/// }
 ///
-///     let bookGenres: [BookGenre] = [.mystery, .romance, .scienceFiction]
-///     let genreTitles = bookGenres.map { $0.title }.joined(separator: ", ")
+/// let bookGenres: [BookGenre] = [.mystery, .romance, .scienceFiction]
+/// let genreTitles = bookGenres.map { $0.title }.joined(separator: ", ")
 ///
-///     print(genreTitles)
-///     // Prints "Mystery, Romance, Science Fiction"
-///
+/// print(genreTitles)
+/// // Prints "Mystery, Romance, Science Fiction"
+/// ```
 protocol Titleable {
     /// The title of the object.
     var title: String { get }
