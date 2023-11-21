@@ -16,7 +16,7 @@ struct GitHubLinkManager {
     ///
     /// - Parameter login: The GitHub login of the user to open.
     func openProfile(for login: String) {
-        guard let usersURL = GitHub.homeURL else { return }
+        guard let usersURL = GitHubConstants.homeURL else { return }
 
         let userProfileURL = usersURL.appendingPathComponent(login)
         UIApplication.shared.open(userProfileURL)

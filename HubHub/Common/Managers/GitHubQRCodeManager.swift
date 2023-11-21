@@ -24,7 +24,7 @@ struct GitHubQRCodeManager {
     /// If the generation fails for any reason, such as an invalid login or
     /// network issues, the method returns `nil`.
     func generate(for login: String) -> UIImage? {
-        guard let userURL = GitHub.homeURL?.appendingPathComponent(login) else { return nil }
+        guard let userURL = GitHubConstants.homeURL?.appendingPathComponent(login) else { return nil }
 
         let context = CIContext()
         let filter = CIFilter.qrCodeGenerator()

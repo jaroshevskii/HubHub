@@ -19,7 +19,7 @@ struct GitHubAPIManager {
     ///   - login: The GitHub login of the user.
     ///   - completion: A closure to be called upon request completion.
     func fetchUserData(for login: String, completion: @escaping (Result<UserProfileData, Error>) -> Void) {
-        guard let userURL = GitHubAPI.usersURL?.appendingPathComponent(login) else { return }
+        guard let userURL = GitHubAPIConstants.usersURL?.appendingPathComponent(login) else { return }
 
         AF.request(userURL).validate().responseDecodable(of: UserProfileData.self) { response in
             switch response.result {
@@ -37,7 +37,7 @@ struct GitHubAPIManager {
     ///   - id: The starting user ID for fetching users.
     ///   - completion: A closure to be called upon request completion.
     func fetchUsersTableData(from id: Int = 0, completion: @escaping (Result<[UserTableData], Error>) -> Void) {
-        guard let usersURL = GitHubAPI.usersURL else { return }
+        guard let usersURL = GitHubAPIConstants.usersURL else { return }
 
         var urlComponents = URLComponents(url: usersURL, resolvingAgainstBaseURL: false)
         urlComponents?.queryItems = [URLQueryItem(name: "since", value: String(id))]
