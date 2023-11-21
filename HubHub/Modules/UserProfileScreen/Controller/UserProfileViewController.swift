@@ -68,7 +68,7 @@ extension UserProfileViewController {
         ))
     }
     
-    func toggleAvatarImage() {
+    private func toggleAvatarImage() {
         guard let avatarImage = mainView.avatarImage,
               let qrCodeImage = mainView.qrCodeImage
         else { return }

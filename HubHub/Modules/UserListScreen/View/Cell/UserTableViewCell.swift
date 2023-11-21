@@ -2,7 +2,7 @@
 //  UserTableViewCell.swift
 //  HubHub
 //
-//  Created by Anton Andreev on 10/20/23.
+//  Created by Sasha Jaroshevskii on 20.10.23.
 //
 
 import UIKit
@@ -22,34 +22,34 @@ class UserTableViewCell: UITableViewCell {
         }
     }
     
-    let avatarImageView: UIImageView = {
+    private let avatarImageView: UIImageView = {
         let obj = UIImageView()
         obj.backgroundColor = .secondarySystemBackground
         obj.clipsToBounds = true
         return obj
     }()
     
-    let titleLable: UILabel = {
+    private let titleLable: UILabel = {
         let obj = UILabel()
         obj.font = .boldSystemFont(ofSize: UIFont.labelFontSize)
         return obj
     }()
     
-    let desctiptionLable: UILabel = {
+    private let desctiptionLable: UILabel = {
         let obj = UILabel()
         obj.font = .systemFont(ofSize: UIFont.systemFontSize)
         obj.textColor = .secondaryLabel
         return obj
     }()
     
-    let contaiterStackView: UIStackView = {
+    private let contaiterStackView: UIStackView = {
         let obj = UIStackView()
         obj.axis = .vertical
         obj.spacing = 4
         return obj
     }()
     
-    let decorImageView: UIImageView = {
+    private let decorImageView: UIImageView = {
         let obj = UIImageView(image: UIImage(systemName: "chevron.right"))
         return obj
     }()

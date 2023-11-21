@@ -18,12 +18,6 @@ class SettingsViewController: UIViewController {
     var selectedPickerType: ColorPickerType?
     
     private let mainView = SettingsView()
-
-    private lazy var colorPickerViewController: UIColorPickerViewController = {
-        let obj = UIColorPickerViewController()
-        obj.delegate = self
-        return obj
-    }()
     
     override func loadView() {
         super.loadView()
@@ -98,7 +92,7 @@ extension SettingsViewController: UITableViewDataSource {
         headerView.model = sections[section].title
         headerView.addGestureRecognizer(UITapGestureRecognizer(
             target: self,
-            action: #selector(didTapOnHeaderInSection)
+            action: #selector(didTapHeaderSection)
         ))
         headerView.tag = section
         headerView.applyTheme()
@@ -125,7 +119,7 @@ extension SettingsViewController: UITableViewDelegate {
 
 // MARK: - User Actions
 extension SettingsViewController {
-    @objc func didTapOnHeaderInSection(_ sender: UITapGestureRecognizer) {
+    @objc func didTapHeaderSection(_ sender: UITapGestureRecognizer) {
         toggleSection(sender)
     }
 }
@@ -154,21 +148,21 @@ extension SettingsViewController {
     }
 }
 
-// MARK: - Color Picker Presentation
+// MARK: - Navigation
 extension SettingsViewController {
-    func presentColorPicker() {
-        let colorPickerViewController = UIColorPickerViewController()
-        colorPickerViewController.delegate = self
+    private func navigateToColorPicker() {
+        let viewController = UIColorPickerViewController()
+        viewController.delegate = self
 
         switch selectedPickerType {
         case .background:
-            colorPickerViewController.selectedColor = currentTheme.backgroundColor
+            viewController.selectedColor = currentTheme.backgroundColor
         case .tint:
-            colorPickerViewController.selectedColor = currentTheme.tintColor
+            viewController.selectedColor = currentTheme.tintColor
         default: break
         }
 
-        present(colorPickerViewController, animated: true, completion: nil)
+        present(viewController, animated: true)
     }
 }
 
@@ -185,10 +179,10 @@ extension SettingsViewController {
             
         case .backgroundColor:
             selectedPickerType = .background
-            presentColorPicker()
+            navigateToColorPicker()
         case .tintColor:
             selectedPickerType = .tint
-            presentColorPicker()
+            navigateToColorPicker()
         }
     }
 }
@@ -214,7 +208,6 @@ extension SettingsViewController: UIColorPickerViewControllerDelegate {
 // MARK: - Theme
 extension SettingsViewController: Themeable {
     func applyTheme() {
-        colorPickerViewController.selectedColor = currentTheme.backgroundColor
         mainView.applyTheme()
     }
     

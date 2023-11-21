@@ -25,6 +25,7 @@ class UserListViewController: UIViewController {
         
         configureNavigationBar()
         configureTableView()
+        
         loadData()
     }
     
@@ -40,33 +41,37 @@ extension UserListViewController {
     private func configureNavigationBar() {
         title = "Users"
         navigationController?.navigationBar.prefersLargeTitles = true
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "qrcode.viewfinder"),
             style: .plain,
             target: self,
-            action: #selector(openQRCodeScanner)
+            action: #selector(didTapQRCodeButton)
         )
-    }
-    
-    // TODO: - move to actions
-    @objc private func openQRCodeScanner() {
-        navigationController?.pushViewController(QRCodeScannerViewController(), animated: true)
     }
 }
 
-// MARK: - Actions
+// MARK: - Uaser Actions
 extension UserListViewController {
-    @objc
-    private func didRefreshControlValueChanged() {
+    @objc private func didTapQRCodeButton() {
+        navigateToQRCodeScanner()
+    }
+
+    @objc private func didRefreshControlValueChanged() {
         refreshData()
     }
 }
 
-
 // MARK: - Navigation
 extension UserListViewController {
-    // TODO: - fill
+    private func navigateToQRCodeScanner() {
+        let viewController = QRCodeScannerViewController()
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    private func navigateToUserProfile(for userLogin: String) {
+        let viewController = UserProfileViewController(login: userLogin)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 // MARK: - Table View
@@ -76,9 +81,9 @@ extension UserListViewController: UITableViewDataSource, UITableViewDelegate {
         mainView.tableView.delegate = self
         mainView.tableView.register(UserTableViewCell.self, forCellReuseIdentifier: UserTableViewCell.identifier)
         
-        let tableRefreshControll = UIRefreshControl()
-        tableRefreshControll.addTarget(self, action: #selector(didRefreshControlValueChanged), for: .valueChanged)
-        mainView.tableView.refreshControl = tableRefreshControll
+        let refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(didRefreshControlValueChanged), for: .valueChanged)
+        mainView.tableView.refreshControl = refreshControl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,8 +101,7 @@ extension UserListViewController: UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = users[indexPath.row]
-        let userProfileViewController = UserProfileViewController(login: user.login)
-        navigationController?.pushViewController(userProfileViewController, animated: true)
+        navigateToUserProfile(for: user.login)
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -136,8 +140,6 @@ extension UserListViewController {
             }
         }
     }
-    
-
     
     private func refreshData() {
         GitHubAPIManager.shared.fetchUsersTableData() { [self] result in

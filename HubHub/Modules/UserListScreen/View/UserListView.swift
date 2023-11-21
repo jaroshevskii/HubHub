@@ -44,6 +44,7 @@ class UserListView: UIView {
     }
 }
 
+// MARK: - Theme
 extension UserListView: Themeable {
     func applyTheme() {
         tableView.backgroundColor = currentTheme.backgroundColor
