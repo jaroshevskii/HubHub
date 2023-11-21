@@ -8,22 +8,22 @@
 /// Represents detailed profile data for a GitHub user.
 struct UserProfileData {
     /// The GitHub login name of the user.
-    public var login: String
+    var login: String
 
     /// The URL of the user's avatar image.
-    public var avatarURL: String
+    var avatarURL: String
 
     /// The full name of the user.
-    public var name: String?
+    var name: String?
 
     /// The company the user is associated with.
-    public var company: String?
+    var company: String?
 
     /// The user's blog URL.
-    public var blog: String
+    var blog: String
 
     /// The geographical location of the user.
-    public var location: String?
+    var location: String?
 }
 
 // MARK: - Codable
