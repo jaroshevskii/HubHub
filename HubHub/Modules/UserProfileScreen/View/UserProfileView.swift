@@ -35,22 +35,22 @@ class UserProfileView: UIView {
     }()
     
     private let nameSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(title: "Login", icon: .name)
+        let obj = UserProfileSectionView(title: "Name", icon: .name)
         return obj
     }()
     
     private let companySectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(title: "Login", icon: .company)
+        let obj = UserProfileSectionView(title: "Company", icon: .company)
         return obj
     }()
     
     private let blogSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(title: "Login", icon: .blog)
+        let obj = UserProfileSectionView(title: "Blog", icon: .blog)
         return obj
     }()
     
     private let locationSectionView: UserProfileSectionView = {
-        let obj = UserProfileSectionView(title: "Login", icon: .location)
+        let obj = UserProfileSectionView(title: "Location", icon: .location)
         return obj
     }()
     

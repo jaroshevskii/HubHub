@@ -14,7 +14,11 @@ class UserTableViewCell: UITableViewCell {
     
     var model: UserTableData? {
         didSet {
-            if let model { handle(model) }
+            guard let model else { return }
+            
+            handleAvatar(with: model.avatarURL)
+            handleTitle(with: model.login)
+            handleDesctiption(with: model.id)
         }
     }
     
@@ -100,17 +104,23 @@ class UserTableViewCell: UITableViewCell {
 
 // MARK: - Hendlers
 extension UserTableViewCell {
-    func handle(_ model: UserTableData) {
+    private func handleAvatar(with avararURL: String) {
         avatarImageView.kf.setImage(
-            with: URL(string: model.avatarURL),
+            with: URL(string: avararURL),
             options: [
                 .transition(.fade(0.25)),
             ],
             completionHandler: { _ in
                 self.layoutSubviews()
             })
-        titleLable.text = model.login
-        desctiptionLable.text = "ID \(model.id)"
+    }
+    
+    private func handleTitle(with login: String) {
+        titleLable.text = login
+    }
+    
+    private func handleDesctiption(with id: Int) {
+        desctiptionLable.text = "ID \(id)"
     }
 }
 
