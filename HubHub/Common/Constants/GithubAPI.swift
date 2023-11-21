@@ -7,6 +7,8 @@
 
 import Foundation
 
+/// Represents a set of constants related to the GitHub API.
 struct GitHubAPI {
+    /// The base URL for fetching information about GitHub users.
     static let usersURL = URL(string: "https://api.github.com/users")
 }
