@@ -97,4 +97,4 @@ We welcome contributions! If you'd like to enhance HubHub, feel free to fork the
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE.md).
+This project is licensed under the [MIT License](LICENSE.txt).
