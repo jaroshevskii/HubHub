@@ -1,10 +1,10 @@
-[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://vshymanskyy.github.io/StandWithUkraine)
-
 ![image](https://github.com/jaroshevskii/HubHub/assets/72662383/c5b60540-5f0c-48d4-b73b-65d5bedbc022)
 
 # HubHub
 
 HubHub is an iOS app that simplifies browsing of GitHub user profiles. It allows you to quickly browse profiles, scan QR codes, and customize your viewing experience. With a clean interface, HubHub includes important features like theme customization, landscape support, pull-to-refresh, and infinite scrolling, resulting in a smooth, seamless user experience.
+
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://vshymanskyy.github.io/StandWithUkraine)
 
 ## Table of Contents
 
